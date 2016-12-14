@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+var payload;
+const elInput = document.querySelector('.search');
+const elResult = document.querySelector('.suggestions');
+
+elInput.addEventListener('input', function(e) {
+  if(this.value) {
+    var term = this.value;
+    var regex = new RegExp(term, 'gi');
+    var filtered = filterCities(term, payload);
+    var html = filtered.map(function(city) {
+      var theCity = city.city.replace(regex, `<span class="hl">` + term + `</span>`);
+      var theState = city.state.replace(regex, `<span class="hl">` + term + `</span>`);
+      return `
+        <li>
+          <span class="name">` + theCity + `, ` + theState + `</span>
+          <span class="population">` + city.population + `</span>
+        </li>
+      `;
+    }).join('');
+    return elResult.innerHTML = html;
+  }
+  else {
+    return elResult.innerHTML = `<li>Filter for a city</li><li>or a state</li>`;
+  }
+});
+// Check for fetch API
+if (self.fetch) {
+  // Fetch json data
+  fetch(endpoint).then(function(res) {
+    res.json().then(function(json) {
+      payload = json;
+    });
+  });
+}
+else {
+  console.log('No fetch api present.');
+}
+
+function filterCities(input, cities) {
+  return cities.filter(function(city) {
+    var regex = new RegExp(input, 'gi');
+    return city.city.match(regex) || city.state.match(regex);
+  });
+}
+
+</script>
+  </body>
+</html>
