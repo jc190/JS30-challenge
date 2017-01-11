@@ -1,0 +1,30 @@
+body {
+  margin-bottom: 4rem;
+}
+
+.title {
+  color: #333;
+  border-bottom: 3px solid #555;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+.challenges {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ddd;
+}
+
+.challenges li {
+  padding: 1rem;
+}
+
+.challenges li h3 {
+  padding: 0;
+  margin: 0;
+}
+
+.challenges li:nth-of-type(odd) {
+  background-color: #f1f1f1;
+}
